@@ -1,4 +1,29 @@
+import { useEffect, useState } from 'react'
+
 function App() {
+  const [tickets, setTickets] = useState([])
+
+  useEffect(() => {
+    fetch('http://localhost:8000/tickets')
+      .then((response) => response.json())
+      .then((data) => setTickets(data))
+      .catch((error) => console.error('Error fetching tickets:', error))
+  }, [])
+
+  const totalTickets = tickets.length
+
+  const openTickets = tickets.filter(
+    (ticket) => ticket.status.toLowerCase() === 'open'
+  ).length
+
+  const inProgressTickets = tickets.filter(
+    (ticket) => ticket.status.toLowerCase() === 'in_progress'
+  ).length
+
+  const resolvedTickets = tickets.filter(
+    (ticket) => ticket.status.toLowerCase() === 'resolved'
+  ).length
+
   return (
     <div className="app">
       <aside className="sidebar">
@@ -22,22 +47,44 @@ function App() {
         <section className="stats-grid">
           <div className="stat-card">
             <h3>Total Tickets</h3>
-            <p>0</p>
+            <p>{totalTickets}</p>
           </div>
 
           <div className="stat-card">
             <h3>Open</h3>
-            <p>0</p>
+            <p>{openTickets}</p>
           </div>
 
           <div className="stat-card">
             <h3>In Progress</h3>
-            <p>0</p>
+            <p>{inProgressTickets}</p>
           </div>
 
           <div className="stat-card">
             <h3>Resolved</h3>
-            <p>0</p>
+            <p>{resolvedTickets}</p>
+          </div>
+        </section>
+
+        <section className="ticket-section">
+          <h2>Recent Tickets</h2>
+
+          <div className="ticket-table">
+            <div className="ticket-row ticket-header">
+              <span>ID</span>
+              <span>Title</span>
+              <span>Priority</span>
+              <span>Status</span>
+            </div>
+
+            {tickets.map((ticket) => (
+              <div className="ticket-row" key={ticket.id}>
+                <span>#{ticket.id}</span>
+                <span>{ticket.title}</span>
+                <span>{ticket.priority}</span>
+                <span>{ticket.status}</span>
+              </div>
+            ))}
           </div>
         </section>
       </main>

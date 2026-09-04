@@ -83,3 +83,35 @@ body {
   font-size: 32px;
   font-weight: bold;
 }
+
+.ticket-section {
+  margin-top: 32px;
+}
+
+.ticket-section h2 {
+  margin-bottom: 16px;
+}
+
+.ticket-table {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.ticket-row {
+  display: grid;
+  grid-template-columns: 100px 2fr 1fr 1fr;
+  padding: 16px 20px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.ticket-row:last-child {
+  border-bottom: none;
+}
+
+.ticket-header {
+  background: #f9fafb;
+  font-weight: bold;
+  color: #6b7280;
+}

@@ -1,4 +1,8 @@
 import { useEffect, useState } from 'react'
+import { Link, Route, Routes } from 'react-router-dom'
+
+import Dashboard from './pages/Dashboard'
+import Tickets from './pages/Tickets'
 
 function App() {
   const [tickets, setTickets] = useState([])
@@ -10,83 +14,30 @@ function App() {
       .catch((error) => console.error('Error fetching tickets:', error))
   }, [])
 
-  const totalTickets = tickets.length
-
-  const openTickets = tickets.filter(
-    (ticket) => ticket.status.toLowerCase() === 'open'
-  ).length
-
-  const inProgressTickets = tickets.filter(
-    (ticket) => ticket.status.toLowerCase() === 'in_progress'
-  ).length
-
-  const resolvedTickets = tickets.filter(
-    (ticket) => ticket.status.toLowerCase() === 'resolved'
-  ).length
-
   return (
     <div className="app">
       <aside className="sidebar">
         <h2>CloudOps</h2>
 
         <nav>
-          <a href="#">Dashboard</a>
-          <a href="#">Tickets</a>
+          <Link to="/">Dashboard</Link>
+          <Link to="/tickets">Tickets</Link>
           <a href="#">Create Ticket</a>
         </nav>
       </aside>
 
       <main className="main-content">
-        <header className="topbar">
-          <div>
-            <h1>Dashboard</h1>
-            <p>Overview of support tickets</p>
-          </div>
-        </header>
+        <Routes>
+          <Route
+            path="/"
+            element={<Dashboard tickets={tickets} />}
+          />
 
-        <section className="stats-grid">
-          <div className="stat-card">
-            <h3>Total Tickets</h3>
-            <p>{totalTickets}</p>
-          </div>
-
-          <div className="stat-card">
-            <h3>Open</h3>
-            <p>{openTickets}</p>
-          </div>
-
-          <div className="stat-card">
-            <h3>In Progress</h3>
-            <p>{inProgressTickets}</p>
-          </div>
-
-          <div className="stat-card">
-            <h3>Resolved</h3>
-            <p>{resolvedTickets}</p>
-          </div>
-        </section>
-
-        <section className="ticket-section">
-          <h2>Recent Tickets</h2>
-
-          <div className="ticket-table">
-            <div className="ticket-row ticket-header">
-              <span>ID</span>
-              <span>Title</span>
-              <span>Priority</span>
-              <span>Status</span>
-            </div>
-
-            {tickets.map((ticket) => (
-              <div className="ticket-row" key={ticket.id}>
-                <span>#{ticket.id}</span>
-                <span>{ticket.title}</span>
-                <span>{ticket.priority}</span>
-                <span>{ticket.status}</span>
-              </div>
-            ))}
-          </div>
-        </section>
+          <Route
+            path="/tickets"
+            element={<Tickets tickets={tickets} />}
+          />
+        </Routes>
       </main>
     </div>
   )

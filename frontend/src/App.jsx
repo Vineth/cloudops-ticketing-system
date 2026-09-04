@@ -3,15 +3,20 @@ import { Link, Route, Routes } from 'react-router-dom'
 
 import Dashboard from './pages/Dashboard'
 import Tickets from './pages/Tickets'
+import CreateTicket from './pages/CreateTicket'
 
 function App() {
   const [tickets, setTickets] = useState([])
 
-  useEffect(() => {
-    fetch('http://localhost:8000/tickets')
+  const fetchTickets = () => {
+    return fetch('http://localhost:8000/tickets')
       .then((response) => response.json())
       .then((data) => setTickets(data))
       .catch((error) => console.error('Error fetching tickets:', error))
+  }
+
+  useEffect(() => {
+    fetchTickets()
   }, [])
 
   return (
@@ -22,7 +27,7 @@ function App() {
         <nav>
           <Link to="/">Dashboard</Link>
           <Link to="/tickets">Tickets</Link>
-          <a href="#">Create Ticket</a>
+          <Link to="/tickets/create">Create Ticket</Link>
         </nav>
       </aside>
 
@@ -36,6 +41,11 @@ function App() {
           <Route
             path="/tickets"
             element={<Tickets tickets={tickets} />}
+          />
+
+          <Route
+            path="/tickets/create"
+            element={<CreateTicket fetchTickets={fetchTickets} />}
           />
         </Routes>
       </main>

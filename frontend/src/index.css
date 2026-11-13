@@ -1,3 +1,4 @@
+/* Global reset and base page styling */
 * {
   box-sizing: border-box;
 }
@@ -9,11 +10,15 @@ body {
   color: #1f2937;
 }
 
+
+/* Main application layout */
 .app {
   display: flex;
   min-height: 100vh;
 }
 
+
+/* Sidebar navigation */
 .sidebar {
   width: 240px;
   background: #111827;
@@ -44,11 +49,15 @@ body {
   color: white;
 }
 
+
+/* Main page content */
 .main-content {
   flex: 1;
   padding: 32px;
 }
 
+
+/* Page headings */
 .topbar h1 {
   margin: 0;
 }
@@ -58,6 +67,8 @@ body {
   color: #6b7280;
 }
 
+
+/* Dashboard statistics */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -84,6 +95,8 @@ body {
   font-weight: bold;
 }
 
+
+/* Ticket list and table */
 .ticket-section {
   margin-top: 32px;
 }
@@ -116,6 +129,8 @@ body {
   color: #6b7280;
 }
 
+
+/* Ticket create and edit forms */
 .ticket-form-section {
   margin-top: 32px;
   max-width: 700px;
@@ -153,6 +168,8 @@ body {
   resize: vertical;
 }
 
+
+/* Form buttons */
 .ticket-form button {
   width: fit-content;
   padding: 12px 20px;
@@ -167,4 +184,13 @@ body {
 
 .ticket-form button:hover {
   background: #1f2937;
+}
+
+/* Delete button */
+.ticket-form .delete-button {
+  background: #b91c1c;
+}
+
+.ticket-form .delete-button:hover {
+  background: #991b1b;
 }

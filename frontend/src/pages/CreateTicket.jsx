@@ -1,14 +1,18 @@
 import { useState } from 'react'
 
 function CreateTicket({ fetchTickets }) {
+  // Store the current value of each form field in React state.
   const [title, setTitle] = useState('')
   const [description, setDescription] = useState('')
   const [priority, setPriority] = useState('Low')
   const [status, setStatus] = useState('Open')
 
+  // Runs when the user submits the Create Ticket form.
   const handleSubmit = async (event) => {
+    // Prevent the browser from refreshing the whole page.
     event.preventDefault()
 
+    // Build the JSON object that will be sent to the FastAPI backend.
     const newTicket = {
       title,
       description,
@@ -17,6 +21,7 @@ function CreateTicket({ fetchTickets }) {
     }
 
     try {
+      // Send the new ticket to the POST /tickets API endpoint.
       const response = await fetch('http://localhost:8000/tickets', {
         method: 'POST',
         headers: {
@@ -25,12 +30,16 @@ function CreateTicket({ fetchTickets }) {
         body: JSON.stringify(newTicket),
       })
 
+      // Stop here if the backend returns an error response.
       if (!response.ok) {
         throw new Error('Failed to create ticket')
       }
 
-      await fetchTickets() // Refresh the ticket list after creating a new ticket
+      // Refresh the shared ticket list in App.jsx so the new ticket
+      // appears immediately on the Dashboard and Tickets pages.
+      await fetchTickets()
 
+      // Reset the form back to its default values after a successful creation.
       setTitle('')
       setDescription('')
       setPriority('Low')
@@ -44,6 +53,7 @@ function CreateTicket({ fetchTickets }) {
 
   return (
     <>
+      {/* Page heading */}
       <header className="topbar">
         <div>
           <h1>Create Ticket</h1>
@@ -52,6 +62,7 @@ function CreateTicket({ fetchTickets }) {
       </header>
 
       <section className="ticket-form-section">
+        {/* handleSubmit runs when this form is submitted */}
         <form className="ticket-form" onSubmit={handleSubmit}>
           <label>
             Title
@@ -96,6 +107,7 @@ function CreateTicket({ fetchTickets }) {
             </select>
           </label>
 
+          {/* Submitting this button triggers handleSubmit */}
           <button type="submit">Create Ticket</button>
         </form>
       </section>

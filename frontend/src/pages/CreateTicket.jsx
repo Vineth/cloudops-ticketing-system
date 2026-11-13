@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { API_URL } from '../config.js'
 
 function CreateTicket({ fetchTickets }) {
   // Store the current value of each form field in React state.
@@ -22,7 +23,7 @@ function CreateTicket({ fetchTickets }) {
 
     try {
       // Send the new ticket to the POST /tickets API endpoint.
-      const response = await fetch('http://localhost:8000/tickets', {
+      const response = await fetch(`${API_URL}/tickets`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

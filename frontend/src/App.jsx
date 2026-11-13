@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, Route, Routes } from 'react-router-dom'
+import { API_URL } from './config.js'
 
 import Dashboard from './pages/Dashboard'
 import Tickets from './pages/Tickets'
@@ -15,7 +16,7 @@ function App() {
   // We call this when the app first loads and after creating, updating,
   // or deleting a ticket so the frontend stays in sync with PostgreSQL.
   const fetchTickets = () => {
-    return fetch('http://localhost:8000/tickets')
+    return fetch(`${API_URL}/tickets`)
       .then((response) => response.json())
       .then((data) => setTickets(data))
       .catch((error) => console.error('Error fetching tickets:', error))

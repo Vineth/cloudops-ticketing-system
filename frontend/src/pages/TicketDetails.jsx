@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { API_URL } from '../config.js'
 
 function TicketDetails({ fetchTickets }) {
   // Read the ticket ID from the URL.
@@ -27,7 +28,7 @@ function TicketDetails({ fetchTickets }) {
     setLoading(true)
     setError('')
 
-    fetch(`http://localhost:8000/tickets/${id}`)
+    fetch(`${API_URL}/tickets/${id}`)
       .then((response) => {
         // FastAPI returns 404 when the ticket does not exist.
         if (!response.ok) {
@@ -63,7 +64,7 @@ function TicketDetails({ fetchTickets }) {
     }
 
     try {
-      const response = await fetch(`http://localhost:8000/tickets/${id}`, {
+        const response = await fetch(`${API_URL}/tickets/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -94,7 +95,7 @@ function TicketDetails({ fetchTickets }) {
     }
 
     try {
-      const response = await fetch(`http://localhost:8000/tickets/${id}`, {
+        const response = await fetch(`${API_URL}/tickets/${id}`, {
         method: 'DELETE',
       })
 

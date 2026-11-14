@@ -66,3 +66,35 @@ jobs:
       - name: Stop containers
         if: always()
         run: docker compose down
+
+      - name: Verify ticket lifecycle
+        shell: bash
+        run: |
+          api_url=http://localhost:8000
+
+          echo "Create a ticket"
+          ticket=$(curl -fsS --max-time 10 -X POST "$api_url/tickets" \
+            -H 'Content-Type: application/json' \
+            -d '{"title":"CI smoke test","description":"Created by GitHub Actions","priority":"medium","status":"open"}')
+          ticket_id=$(jq -er '.id | numbers' <<< "$ticket")
+          ticket_url="$api_url/tickets/$ticket_id"
+
+          echo "Read the ticket"
+          curl -fsS --max-time 10 "$ticket_url" \
+            | jq -e '.title == "CI smoke test" and .status == "open"'
+
+          echo "Update the status and read it back"
+          curl -fsS --max-time 10 -X PUT "$ticket_url" \
+            -H 'Content-Type: application/json' \
+            -d '{"title":"CI smoke test","description":"Created by GitHub Actions","priority":"medium","status":"resolved"}'
+          curl -fsS --max-time 10 "$ticket_url" \
+            | jq -e '.status == "resolved"'
+
+          echo "Delete the ticket and verify it is gone"
+          curl -fsS --max-time 10 -X DELETE "$ticket_url"
+          status_code=$(curl -sS --max-time 10 -o /dev/null \
+            -w '%{http_code}' "$ticket_url")
+          if [[ "$status_code" != 404 ]]; then
+            echo "Expected HTTP 404 after deletion, got $status_code"
+            exit 1
+          fi
